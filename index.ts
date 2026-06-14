@@ -29,4 +29,23 @@ async function main() {
 }
 
 // Jalankan simulasi inti DOKB-OS
-main().catch((err) => console.error("Error pada DOKB-OS Engine:", err));
+import { VercelRequest, VercelResponse } from '@vercel/node';
+
+// Pindahkan atau bungkus fungsi pemanggilan utama kamu ke dalam handler Vercel
+export default async function handler(req: VercelRequest, res: VercelResponse) {
+    try {
+        // Jalankan fungsi simulasi core kamu di latar belakang
+        await main();
+        
+        // Kirim respon sukses ke layar browser agar Vercel tidak error 500
+        return res.status(200).json({ 
+            status: "success", 
+            message: "DOKB-OS Core Orchestrator successfully invoked." 
+        });
+    } catch (err: any) {
+        return res.status(500).json({ 
+            status: "error", 
+            message: err.message || "Internal Engine Error" 
+        });
+    }
+}
