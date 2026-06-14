@@ -1,9 +1,15 @@
 {
-  "cleanUrls": true,
+  "version": 2,
+  "buildCommand": "tsc",
+  "outputDirectory": "dist",
   "rewrites": [
     {
+      "source": "/api/(.*)",
+      "destination": "/api/$1"
+    },
+    {
       "source": "/(.*)",
-      "destination": "/dist/public/index.html"
+      "destination": "/public/index.html"
     }
   ]
 }
