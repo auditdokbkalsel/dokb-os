@@ -1,13 +1,50 @@
-import { Founder } from "./agents/founder";
+import { TaskPacket } from "./router";
+
+export type ApprovalStatus = "pending" | "approved" | "rejected";
+
+export interface ApprovalRecord {
+  packet: TaskPacket;
+  status: ApprovalStatus;
+  reason?: string;
+  approvedAt?: string;
+}
 
 export const ApprovalGate = {
-  checkReadiness(qaReport: string): boolean {
-    console.log(`\n🛡️ [Approval Gate]: Memeriksa kesiapan rilis berdasarkan laporan QA...`);
-    return qaReport.includes("Aman") || qaReport.includes("Sesuai Standar");
+  pending: [] as ApprovalRecord[],
+
+  submit(packet: TaskPacket): ApprovalRecord {
+    const record: ApprovalRecord = {
+      packet,
+      status: "pending",
+    };
+    this.pending.push(record);
+    console.log(`⏳ [Approval]: Tugas "${packet.id}" menunggu persetujuan Founder...`);
+    return record;
   },
 
-  grantFinalApproval(featureName: string): void {
-    console.log(`👑 [Approval Gate]: ${Founder.nama} (${Founder.role}) memberikan Lampu Hijau 🟢`);
-    console.log(`🚀 Fitur [${featureName}] SIAP UNTUK DEPLOY KE DMIP PLATFORM!\n`);
+  approve(packetId: string, reason?: string): ApprovalRecord | null {
+    const record = this.pending.find(r => r.packet.id === packetId);
+    if (!record) {
+      console.log(`❌ [Approval]: Tugas "${packetId}" tidak ditemukan.`);
+      return null;
+    }
+    record.status = "approved";
+    record.reason = reason;
+    record.approvedAt = new Date().toISOString();
+    console.log(`✅ [Approval]: Tugas "${packetId}" disetujui Founder.`);
+    return record;
+  },
+
+  reject(packetId: string, reason: string): ApprovalRecord | null {
+    const record = this.pending.find(r => r.packet.id === packetId);
+    if (!record) return null;
+    record.status = "rejected";
+    record.reason = reason;
+    console.log(`🚫 [Approval]: Tugas "${packetId}" ditolak. Alasan: ${reason}`);
+    return record;
+  },
+
+  getPending(): ApprovalRecord[] {
+    return this.pending.filter(r => r.status === "pending");
   }
 };
