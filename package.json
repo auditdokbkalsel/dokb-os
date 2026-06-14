@@ -1,12 +1,14 @@
 {
   "name": "dokb-os",
   "version": "1.0.0",
-  "description": "Core Multi-Agent AI Orchestrator application for DOKB ecosystem",
-  "main": "index.ts",
   "scripts": {
     "build": "tsc"
   },
+  "dependencies": {
+    "@vercel/node": "^3.0.0"
+  },
   "devDependencies": {
-    "typescript": "^5.0.0"
+    "typescript": "^5.0.0",
+    "@types/node": "^20.0.0"
   }
 }
