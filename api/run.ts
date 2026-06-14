@@ -4,8 +4,8 @@
 // Author  : Jani (Founder & Product Owner)
 // ============================================================================
 
-import { DOKBWorkflow } from "./core/workflow";
-import { ApprovalGate } from "./core/approval";
+import { DOKBWorkflow } from "../core/workflow";
+import { ApprovalGate } from "../core/approval";
 import { Founder } from "./core/agents/founder";
 
 async function main() {
