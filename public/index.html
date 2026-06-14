@@ -1,131 +1,144 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DOKB-OS | Multi-Agent Orchestrator</title>
-    <!-- Tailwind CSS CDN -->
-    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-    <style>
-        body { background-color: #0b0f19; color: #f3f4f6; }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>DOKB-OS</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: sans-serif;
+      background: #0f172a;
+      color: #f1f5f9;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    .card {
+      background: #1e293b;
+      border-radius: 16px;
+      padding: 32px;
+      width: 100%;
+      max-width: 480px;
+    }
+    h1 {
+      font-size: 1.5rem;
+      margin-bottom: 4px;
+      color: #38bdf8;
+    }
+    p.sub {
+      font-size: 0.85rem;
+      color: #94a3b8;
+      margin-bottom: 24px;
+    }
+    label {
+      display: block;
+      font-size: 0.8rem;
+      color: #94a3b8;
+      margin-bottom: 6px;
+    }
+    input, textarea {
+      width: 100%;
+      background: #0f172a;
+      border: 1px solid #334155;
+      border-radius: 8px;
+      padding: 10px 14px;
+      color: #f1f5f9;
+      font-size: 0.95rem;
+      margin-bottom: 16px;
+      outline: none;
+    }
+    textarea { height: 100px; resize: none; }
+    button {
+      width: 100%;
+      background: #38bdf8;
+      color: #0f172a;
+      border: none;
+      border-radius: 8px;
+      padding: 12px;
+      font-size: 1rem;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    button:disabled { opacity: 0.5; cursor: not-allowed; }
+    .result {
+      margin-top: 20px;
+      background: #0f172a;
+      border-radius: 8px;
+      padding: 16px;
+      font-size: 0.85rem;
+      color: #94a3b8;
+      display: none;
+    }
+    .result.show { display: block; }
+    .success { color: #4ade80; }
+    .error { color: #f87171; }
+  </style>
 </head>
-<body class="font-sans min-h-screen flex flex-col">
+<body>
+  <div class="card">
+    <h1>🤖 DOKB-OS</h1>
+    <p class="sub">AI Orchestration System</p>
 
-    <!-- Header -->
-    <header class="border-b border-gray-800 bg-gray-900/50 backdrop-blur px-4 py-3 flex items-center justify-between sticky top-0 z-50">
-        <div class="flex items-center gap-2">
-            <div class="w-3 h-3 rounded-full bg-emerald-500 animate-pulse"></div>
-            <h1 class="text-lg font-bold tracking-wider text-emerald-400">DOKB-OS v1.0</h1>
-        </div>
-        <span class="text-xs bg-gray-800 px-2.5 py-1 rounded-full text-gray-400 border border-gray-700">Core Active</span>
-    </header>
+    <label>Task ID</label>
+    <input id="taskId" type="text" placeholder="Contoh: task-001" />
 
-    <!-- Main Dashboard -->
-    <main class="flex-1 p-4 max-w-4xl mx-auto w-full grid grid-cols-1 md:grid-cols-3 gap-4">
-        
-        <!-- Status Panel Agen -->
-        <div class="md:col-span-1 bg-gray-900/60 border border-gray-800 rounded-xl p-4 flex flex-col gap-3">
-            <h2 class="text-sm font-semibold text-gray-400 uppercase tracking-wider mb-1">AI Agents Status</h2>
-            
-            <!-- Chatty -->
-            <div class="flex items-center justify-between p-2.5 rounded-lg bg-gray-800/40 border border-gray-800">
-                <div class="flex items-center gap-2">
-                    <span class="text-lg">🤖</span>
-                    <div>
-                        <p class="text-xs font-medium">Chatty</p>
-                        <p class="text-[10px] text-gray-500">GPT-5.5 Engine</p>
-                    </div>
-                </div>
-                <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
-            </div>
+    <label>Judul Task</label>
+    <input id="taskTitle" type="text" placeholder="Contoh: Buat sistem anggota" />
 
-            <!-- Claudia -->
-            <div class="flex items-center justify-between p-2.5 rounded-lg bg-gray-800/40 border border-gray-800">
-                <div class="flex items-center gap-2">
-                    <span class="text-lg">🧬</span>
-                    <div>
-                        <p class="text-xs font-medium">Claudia</p>
-                        <p class="text-[10px] text-gray-500">Claude 3.5 Engine</p>
-                    </div>
-                </div>
-                <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
-            </div>
+    <label>Deskripsi Task</label>
+    <textarea id="taskPayload" placeholder="Jelaskan task yang ingin dikerjakan..."></textarea>
 
-            <!-- Gemmy -->
-            <div class="flex items-center justify-between p-2.5 rounded-lg bg-gray-800/40 border border-gray-800">
-                <div class="flex items-center gap-2">
-                    <span class="text-lg">✨</span>
-                    <div>
-                        <p class="text-xs font-medium">Gemmy</p>
-                        <p class="text-[10px] text-gray-500">Gemma 3 Engine</p>
-                    </div>
-                </div>
-                <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
-            </div>
-        </div>
+    <button id="btnRun" onclick="runWorkflow()">🚀 Jalankan Workflow</button>
 
-        <!-- Chat / Terminal Panel -->
-        <div class="md:col-span-2 bg-gray-900/40 border border-gray-800 rounded-xl flex flex-col min-h-[400px] max-h-[500px]">
-            <!-- Terminal Header -->
-            <div class="px-4 py-2 border-b border-gray-800 bg-gray-900/80 rounded-t-xl flex items-center justify-between">
-                <span class="text-xs text-gray-400 font-mono">orchestrator_terminal.sh</span>
-                <button onclick="clearTerminal()" class="text-[10px] text-gray-500 hover:text-gray-300 transition">Clear</button>
-            </div>
+    <div class="result" id="result"></div>
+  </div>
 
-            <!-- Log Output -->
-            <div id="terminal-logs" class="flex-1 p-4 font-mono text-xs overflow-y-auto space-y-2 flex flex-col">
-                <div class="text-gray-500">[SYSTEM] Orchestrator initialized. Waiting for prompt...</div>
-            </div>
+  <script>
+    async function runWorkflow() {
+      const id = document.getElementById("taskId").value.trim();
+      const title = document.getElementById("taskTitle").value.trim();
+      const payload = document.getElementById("taskPayload").value.trim();
+      const btn = document.getElementById("btnRun");
+      const result = document.getElementById("result");
 
-            <!-- Input Bar -->
-            <div class="p-3 border-t border-gray-800 bg-gray-900/60 rounded-b-xl">
-                <form id="prompt-form" onsubmit="sendPrompt(event)" class="flex gap-2">
-                    <input type="text" id="user-input" placeholder="Ketik perintah orkestrasi ke agen..." 
-                        class="flex-1 bg-gray-950 border border-gray-800 rounded-lg px-3 py-2 text-xs focus:outline-none focus:border-emerald-500 text-gray-200 placeholder-gray-600">
-                    <button type="submit" class="bg-emerald-600 hover:bg-emerald-500 text-white font-medium px-4 py-2 rounded-lg text-xs transition duration-200">
-                        Execute
-                    </button>
-                </form>
-            </div>
-        </div>
-    </main>
+      if (!id || !title || !payload) {
+        result.className = "result show error";
+        result.textContent = "⚠️ Semua field wajib diisi!";
+        return;
+      }
 
-    <footer class="p-4 border-t border-gray-900 text-center text-[10px] text-gray-600 font-mono">
-        DOKB Ecosystem &copy; 2026
-    </footer>
+      btn.disabled = true;
+      btn.textContent = "⏳ Memproses...";
+      result.className = "result show";
+      result.textContent = "🔄 Menjalankan workflow...";
 
-    <!-- Logic UI Dasar -->
-    <script>
-        function sendPrompt(e) {
-            e.preventDefault();
-            const input = document.getElementById('user-input');
-            const logs = document.getElementById('terminal-logs');
-            
-            if (!input.value.trim()) return;
+      try {
+        const res = await fetch("/api/run", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ id, title, payload }),
+        });
 
-            // Tambah log user
-            const userLog = document.createElement('div');
-            userLog.className = 'text-emerald-400';
-            userLog.innerText = `> ${input.value}`;
-            logs.appendChild(userLog);
+        const data = await res.json();
 
-            // Simulasi respon sistem (nanti disambung ke API)
-            setTimeout(() => {
-                const sysLog = document.createElement('div');
-                sysLog.className = 'text-gray-400 pl-3 border-l border-gray-800';
-                sysLog.innerText = `[SYSTEM] Memproses perintah: "${input.value}" menggunakan core orchestrator...`;
-                logs.appendChild(sysLog);
-                logs.scrollTop = logs.scrollHeight;
-            }, 500);
-
-            input.value = '';
-            logs.scrollTop = logs.scrollHeight;
+        if (data.success) {
+          result.className = "result show success";
+          result.textContent = `✅ ${data.message}`;
+        } else {
+          result.className = "result show error";
+          result.textContent = `❌ Error: ${data.error}`;
         }
-
-        function clearTerminal() {
-            document.getElementById('terminal-logs').innerHTML = '<div class="text-gray-500">[SYSTEM] Terminal cleared.</div>';
-        }
-    </script>
+      } catch (err) {
+        result.className = "result show error";
+        result.textContent = `❌ Gagal konek ke server!`;
+      } finally {
+        btn.disabled = false;
+        btn.textContent = "🚀 Jalankan Workflow";
+      }
+    }
+  </script>
 </body>
 </html>
