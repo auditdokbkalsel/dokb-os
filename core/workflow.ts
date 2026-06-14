@@ -27,7 +27,7 @@ export const Workflow = {
       targetRole: "architect",
       sender: "Founder",
     };
-    const blueprint = AgentRouter.route(blueprintPacket);
+    AgentRouter.route(blueprintPacket);
     console.log(`📐 [Stage 1]: ${AgentRegistry.architect.nama} mengerjakan blueprint...`);
 
     // STAGE 2: Claudia review blueprint
@@ -40,11 +40,8 @@ export const Workflow = {
     AgentRouter.route(reviewBlueprintPacket);
     console.log(`🔍 [Stage 2]: ${AgentRegistry.qa.nama} mereview blueprint...`);
 
-    // STAGE 3: Founder approval sebelum implement
+    // STAGE 3: Founder approval
     const approval = ApprovalGate.submit(blueprintPacket);
-    console.log(`\n⏳ [Stage 3]: Menunggu approval Founder untuk "${task.id}-blueprint"...\n`);
-
-    // Simulasi auto-approve (nanti bisa diganti manual)
     ApprovalGate.approve(`${task.id}-blueprint`, "Approved by Founder");
 
     if (approval.status !== "approved") {
