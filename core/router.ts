@@ -1,15 +1,19 @@
-import { Workflow } from "./core/workflow";
+import { AgentRole, getAgentByRole } from "./registry";
 
-async function main() {
-  console.log("🤖 DOKB-OS — AI Orchestration System");
-  console.log("=====================================\n");
-
-  await Workflow.run({
-    id: "task-001",
-    title: "Contoh Task Pertama",
-    payload: "Buat sistem manajemen anggota DOKB",
-    stage: "blueprint",
-  });
+export interface TaskPacket {
+  id: string;
+  payload: string;
+  targetRole: AgentRole;
+  sender: string;
 }
 
-main().catch(console.error);
+export const AgentRouter = {
+  route(packet: TaskPacket) {
+    const agent = getAgentByRole(packet.targetRole);
+    console.log(`🔀 [Router]: Mengarahkan tugas dari [${packet.sender}] ke [${agent.nama}]`);
+    return {
+      ...packet,
+      timestamp: new Date().toISOString(),
+    };
+  }
+};
