@@ -1,11 +1,9 @@
 {
-  "version": 2,
-  "builds": [
-    { "src": "index.ts", "use": "@vercel/node" },
-    { "src": "public/**/*", "use": "@vercel/static" }
-  ],
-  "routes": [
-    { "src": "/api/run", "dest": "index.ts" },
-    { "src": "/(.*)", "dest": "public/index.html" }
+  "cleanUrls": true,
+  "rewrites": [
+    {
+      "source": "/(.*)",
+      "destination": "/public/$1"
+    }
   ]
 }
