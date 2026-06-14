@@ -2,7 +2,9 @@
   "name": "dokb-os",
   "version": "1.0.0",
   "scripts": {
-    "build": "tsc && cp -r public dist/"
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "dev": "ts-node index.ts"
   },
   "dependencies": {
     "@vercel/node": "^3.0.0"
