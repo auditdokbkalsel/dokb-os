@@ -4,7 +4,7 @@
   "description": "Core Multi-Agent AI Orchestrator application for DOKB ecosystem",
   "main": "index.ts",
   "scripts": {
-    "build": "tscindex"
+    "build": "tsc index.ts"
   },
   "devDependencies": {
     "typescript": "^5.0.0"
