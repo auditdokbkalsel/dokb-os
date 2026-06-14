@@ -2,7 +2,7 @@
   "name": "dokb-os",
   "version": "1.0.0",
   "scripts": {
-    "build": "tsc"
+    "build": "tsc && cp -r public dist/"
   },
   "dependencies": {
     "@vercel/node": "^3.0.0"
